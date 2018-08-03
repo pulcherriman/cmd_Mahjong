@@ -1,4 +1,16 @@
 @echo off
-cd /d %~dp0
+cd %~dp0
+mode con cols=90 lines=25
 setlocal EnableDelayedExpansion
 
+call Times/get begin
+call Utility/shipai yama 136
+call Utility/display yama 136
+call Times/get end
+
+call Times/print begin end
+
+pause>nul
+exit
+
+:init
