@@ -1,4 +1,4 @@
-if "%2" == "" call Error/occured invalid_arguments
+if "%2" == "" call Errors/occured invalid_arguments
 set /a _n=%2-1
 for /l %%_ in (0,1,%_n%) do (
 	set /a _d=%%_^&3

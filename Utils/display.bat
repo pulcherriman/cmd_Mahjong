@@ -1,4 +1,4 @@
-if "%2" == "" call Error/occured invalid_arguments
+if "%2" == "" call Errors/occured invalid_arguments
 
 setlocal
 set _disp=–³–³–³–³–³–³–³–³–³–³ŒŞˆê“ñOlŒÜ˜Zµ”ª‹ã‡N‡@‡A‡B‡C‡D‡E‡F‡G‡H‡X‚P‚Q‚R‚S‚T‚U‚V‚W‚X–³“Œ“ì¼–k”’á¢’†–³–³–³@

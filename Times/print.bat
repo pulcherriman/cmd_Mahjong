@@ -1,4 +1,4 @@
-if "%1" == "" call Error/occured invalid_arguments
+if "%1" == "" call Errors/occured invalid_arguments
 if "%2" == "" (
 	set /a _hour=%1
 	set /a _ms=_hour%%100

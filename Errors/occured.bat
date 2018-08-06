@@ -1,5 +1,5 @@
-if "%1" == "" call Error/occured panic
-cd %~dp0/message
+if "%1" == "" call Errors/occured panic
+cd %~dp0/messages
 color 0c
 echo ƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½I
 if exist %1.txt (
