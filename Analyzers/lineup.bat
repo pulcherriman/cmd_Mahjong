@@ -1,6 +1,12 @@
 :yMain::ref int[14] tp, ref int income -> void
-  setlocal enabledelayedexpansion
+  setlocal EnableDelayedExpansion
   call :yInit %1 %2
+  call Analyzers/checkKokusi tmp
+  if %errorlevel% neq 0 (
+    echo “ª: %errorlevel%
+    echo ‘Žm–³‘o
+    exit /b 0
+  )
   for /l %%i in (11,1,47) do (
     if !tmp[%%i]! geq 2 (
       set /a tmp[%%i]-=2,head=%%i
@@ -48,7 +54,7 @@ exit /b 0
   )
 exit /b 0
 
-:c_Time::int -> void
+:c_Time::int flag -> void
   for /l %%i in (11,1,47) do (
     if !tmp[%%i]! geq 3 (
       set /a tmp[%%i]-=3,time[!t_cnt!]=%%i,t_cnt+=1
@@ -69,7 +75,7 @@ exit /b
   )
 exit /b
 
-:isOrder::int -> void
+:isOrder::int i -> void
   set /a i=%1,j=%1+1,k=%1+2
   :loop_isOrder
   if !tmp[%i%]! geq 1 if !tmp[%j%]! geq 1 if !tmp[%k%]! geq 1 (
@@ -98,8 +104,4 @@ exit /b %n%
   for /l %%i in (0,1,%o_cnt%) do (
     echo ‡Žq%%i: !order[%%i]!
   )
-exit /b
-
-:pause
-  pause > nul
 exit /b
