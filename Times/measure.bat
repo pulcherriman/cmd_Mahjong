@@ -1,4 +1,4 @@
-if "%1" == "" call Error/occured invalid_arguments
+if "%1" == "" call Errors/occured invalid_arguments
 call Times/get begin
 call %*
 call Times/get end
