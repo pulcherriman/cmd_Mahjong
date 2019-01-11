@@ -2,6 +2,7 @@
 cd %~dp0
 mode con cols=90 lines=25
 setlocal EnableDelayedExpansion
+call Utils/envInit
 
 call Times/get begin
 call Utils/shipai yama 136
