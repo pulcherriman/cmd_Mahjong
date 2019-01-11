@@ -2,16 +2,17 @@
 cd %~dp0
 mode con cols=90 lines=25
 setlocal EnableDelayedExpansion
+
+:Routine_init
 call Utils/envInit
 
-call Times/get begin
-call Utils/shipai yama 136
-call Utils/display yama 136
-call Times/get end
+:Routine_main
+call Scenes/title
+call Scenes/games/init
 
-call Times/print begin end
+rem call Times/get begin
+rem call Times/get end
+rem call Times/print begin end
 
-pause>nul
+:Routine_fin
 exit
-
-:init
