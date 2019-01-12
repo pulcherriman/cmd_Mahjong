@@ -1,6 +1,5 @@
 @echo off
 cd %~dp0
-mode con cols=90 lines=25
 setlocal EnableDelayedExpansion
 
 :Routine_init
