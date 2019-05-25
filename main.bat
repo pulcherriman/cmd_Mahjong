@@ -9,9 +9,5 @@ call Utils/envInit
 call Scenes/title
 call Scenes/games/init
 
-rem call Times/get begin
-rem call Times/get end
-rem call Times/print begin end
-
 :Routine_fin
-exit
+goto Routine_init
