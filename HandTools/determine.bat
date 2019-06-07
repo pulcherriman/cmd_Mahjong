@@ -14,6 +14,7 @@
       call :c_Time 0
       call :c_Order
       call :checkUseOut
+      rem 将来的には call :checkUseOut || call :updateScore に置き換えられる
       if errorlevel 1 (
         echo.
         echo パターン1
@@ -25,6 +26,7 @@
       call :c_Order
       call :c_Time 0
       call :checkUseOut
+      rem 将来的には call :checkUseOut || call :updateScore に置き換えられる
       if errorlevel 1 (
         echo.
         echo パターン2
@@ -37,6 +39,7 @@
       call :c_Order
       call :c_Time 0
       call :checkUseOut
+      rem 将来的には call :checkUseOut || call :updateScore に置き換えられる
       if errorlevel 1 (
         echo.
         echo パターン3
@@ -81,7 +84,6 @@ exit /b 0
     set order[%%i]=
   )
 exit /b 0
-
 
 :c_Time::int -> void
   for /l %%i in (11,1,47) do (
@@ -132,14 +134,19 @@ exit /b 1
     echo 順子%%i: !order[%%i]!
   )
   set handSum=0
+
   call :isAllNum tp 13
   set /a isAllNum=%errorlevel%
+
   call %~dp0lib/isAllSimple && set /a handSum^|=!errorlevel!
   echo タンヤオ: %errorlevel%
+
   call %~dp0lib/isSingleColor tp 13 0 && set /a handSum^|=!errorlevel!
   echo 一色系: %errorlevel%
+
   call %~dp0lib/isAllTriple %t_cnt% && set /a handSum^|=!errorlevel!
   echo 対々: %errorlevel%
+
   set /a isAllSimple=handSum ^& 1,isAllTriple=handSum ^& 2048
   if %isAllSimple% equ 0 (
     if %isAllTriple% gtr 0 (
