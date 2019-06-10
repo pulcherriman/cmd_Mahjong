@@ -7,9 +7,6 @@
   echo ”vŽp: %haisi%
   for /l %%i in (11,1,47) do (
     if !tmp[%%i]! geq 2 (
-      echo.
-      echo “ªŒó•â: %%i
-      echo ------------
       set /a tmp[%%i]-=2,head=%%i
       call :c_Time 0
       call :c_Order
@@ -57,20 +54,22 @@ exit /b 0
   set /a head=0,t_cnt=0,o_cnt=0
   set income=22
   set tp[0]=11
-  set tp[1]=12
-  set tp[2]=13
-  set tp[3]=17
-  set tp[4]=18
-  set tp[5]=19
-  set tp[6]=21
-  set tp[7]=22
-  set tp[8]=23
-  set tp[9]=31
-  set tp[10]=31
-  set tp[11]=44
-  set tp[12]=44
-  set tp[13]=44
+  set tp[1]=11
+  set tp[2]=12
+  set tp[3]=12
+  set tp[4]=12
+  set tp[5]=12
+  set tp[6]=13
+  set tp[7]=13
+  set tp[8]=13
+  set tp[9]=13
+  set tp[10]=14
+  set tp[11]=14
+  set tp[12]=14
+  set tp[13]=14
   set haisi=%tp[0]% %tp[1]% %tp[2]% %tp[3]% %tp[4]% %tp[5]% %tp[6]% %tp[7]% %tp[8]% %tp[9]% %tp[10]% %tp[11]% %tp[12]% %tp[13]%
+  call :isAllNum "%haisi%"
+  set /a isAllNum=%errorlevel%
   for /l %%i in (11,1,47) do (
     set newHand[%%i]=0
     set tmp[%%i]=0
@@ -126,6 +125,7 @@ exit /b 1
 
 :updateScore
   rem NowImplementing
+  setlocal
   echo “ª: %head%
   for /l %%i in (1,1,%t_cnt%) do (
     echo Žq%%i: !time[%%i]!
@@ -133,37 +133,42 @@ exit /b 1
   for /l %%i in (1,1,%o_cnt%) do (
     echo ‡Žq%%i: !order[%%i]!
   )
-  set handSum=0
+  set hand_sum=0
 
-  call :isAllNum tp 13
-  set /a isAllNum=%errorlevel%
+  if %isAllNum% equ 1 (
+    call %~dp0lib/isAllSimple || set /a hand_sum^|=!errorlevel!
+    echo ƒ^ƒ“ƒ„ƒI: !errorlevel!
+  )
 
-  call %~dp0lib/isAllSimple && set /a handSum^|=!errorlevel!
-  echo ƒ^ƒ“ƒ„ƒI: %errorlevel%
-
-  call %~dp0lib/isSingleColor tp 13 0 && set /a handSum^|=!errorlevel!
+  call %~dp0lib/isSingleColor tp 13 0 || set /a hand_sum^|=!errorlevel!
   echo ˆêFŒn: %errorlevel%
 
-  call %~dp0lib/isAllTriple %t_cnt% && set /a handSum^|=!errorlevel!
+  call %~dp0lib/isAllTriple %t_cnt% || set /a hand_sum^|=!errorlevel!
   echo ‘ÎX: %errorlevel%
 
-  set /a isAllSimple=handSum ^& 1,isAllTriple=handSum ^& 2048
+  set /a isAllSimple=hand_sum ^& 1,isAllTriple=hand_sum ^& 2048
   if %isAllSimple% equ 0 (
     if %isAllTriple% gtr 0 (
-      set times="%time[1]% %time[2]% %time[3]% %time[4]%"
-      call %~dp0lib/isTerminalHonor %head% !times! && set /a handSum^|=!errorlevel!
+      set times=%time[1]% %time[2]% %time[3]% %time[4]%
+      call %~dp0lib/isTerminalHonor %head% "!times!" || set /a hand_sum^|=!errorlevel!
       echo ˜V“ªŒn: !errorlevel!
     ) else (
-      call %~dp0lib/isOutSide %head% time %t_cnt% order %o_cnt% && set /a handSum^|=!errorlevel!
+      call %~dp0lib/isOutSide %head% time %t_cnt% order %o_cnt% || set /a hand_sum^|=!errorlevel!
       echo ‘S‘ÑŒn: !errorlevel!
     )
   )
-  echo %handSum%
+
+  if %o_cnt% geq 3 (
+    set orders=%order[1]% %order[2]% %order[3]% %order[4]%
+    call %~dp0lib/isStraight "!orders!" %o_cnt% || set /a hand_sum^|=!errorlevel!
+    echo ˆê’Ê: !errorlevel!
+  )
+  echo %hand_sum%
 exit /b
 
-:isAllNum::ref int[] tp, int endIdx -> bool
+:isAllNum::string haisi -> bool
   setlocal
-  for /l %%i in (end,-1,0) do (
-    if !%1[%%i]! geq 40 exit /b 0
+  for %%h in (%~1) do (
+    if %%h geq 40 exit /b 0
   )
 exit /b 1
