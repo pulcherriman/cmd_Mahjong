@@ -1,3 +1,5 @@
+rem No external file reference
+
 set _cur=%time%
 if "%_cur:~0,1%" == " " (
 	set _ret=10%_cur:~1,1%

@@ -1,3 +1,5 @@
+pushd %~dp0..
+
 if "%1" == "" call Errors/occured invalid_arguments
 if "%2" == "" (
 	set /a _hour=%1
@@ -11,3 +13,5 @@ if "%2" == "" (
 	call Times/print %2
 	echo diff: !_diff!0 msec
 )
+
+popd

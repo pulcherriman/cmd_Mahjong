@@ -1,3 +1,5 @@
+pushd %~dp0..
+
 if "%3" == "" call Errors/occured invalid_arguments
 
 setlocal
@@ -10,7 +12,7 @@ for /l %%_ in (%2,1,%_n%) do (
 	set _str=!_str!!_char!
 )
 echo %_str%
-exit /b
+popd && exit /b
 
 :getChar
 	set _char=!_disp:~%1,1!

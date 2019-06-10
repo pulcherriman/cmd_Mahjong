@@ -1,17 +1,19 @@
-if "%1" == "" call Errors/occured panic
-cd %~dp0/messages
+pushd %~dp0..
+
+if "%1" == "" call occured panic
+
 color 0c
 echo エラーが発生しました！
-if exist %1.txt (
+if exist Errors/messages/%1.txt (
 	echo 種別: 一般エラー
 	echo 名称: %1
 	echo.
-	type %1.txt
+	type Errors/message/%1.txt
 ) else (
 	echo 種別: 特殊エラー
 	echo 名称: %1
 )
 pause>nul
-exit
+popd && exit
 
 
