@@ -2,9 +2,21 @@
 
 :handMain
   setlocal enabledelayedexpansion
-  call %~dp0../Times/get begin
+  call Times/get begin
   call :handInit
   echo 牌姿: %haisi%
+  set base_hand_sum=0
+
+  call :isAllNum "%haisi%" & set /a isAllNum=!errorlevel!
+
+  if %isAllNum% equ 1 (
+    call %~dp0lib/isAllSimple || set /a base_hand_sum^|=!errorlevel!
+    echo タンヤオ: !errorlevel!
+  )
+
+  call %~dp0lib/isSingleColor tp 13 0 || set /a base_hand_sum^|=!errorlevel!
+  echo 一色系: %errorlevel%
+
   for /l %%i in (11,1,47) do (
     if !tmp[%%i]! geq 2 (
       set /a tmp[%%i]-=2,head=%%i
@@ -16,7 +28,9 @@
         echo.
         echo パターン1
         echo ---------
-        call :updateScore
+        call :printFormation
+        call %~dp0lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
+        echo !hand_sum!
       )
       call :handInit
       set /a tmp[%%i]-=2,head=%%i
@@ -28,7 +42,9 @@
         echo.
         echo パターン2
         echo ---------
-        call :updateScore
+        call :printFormation
+        call %~dp0lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
+        echo !hand_sum!
         )
       call :handInit
       set /a tmp[%%i]-=2,head=%%i
@@ -41,13 +57,15 @@
         echo.
         echo パターン3
         echo ---------
-        call :updateScore
+        call :printFormation
+        call %~dp0lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
+        echo !hand_sum!
       )
       call :handInit
     )
   )
-  call %~dp0../Times/get end
-  call %~dp0../Times/print begin end
+  call Times/get end
+  call Times/print begin end
 exit /b 0
 
 :handInit
@@ -68,8 +86,6 @@ exit /b 0
   set tp[12]=14
   set tp[13]=14
   set haisi=%tp[0]% %tp[1]% %tp[2]% %tp[3]% %tp[4]% %tp[5]% %tp[6]% %tp[7]% %tp[8]% %tp[9]% %tp[10]% %tp[11]% %tp[12]% %tp[13]%
-  call :isAllNum "%haisi%"
-  set /a isAllNum=%errorlevel%
   for /l %%i in (11,1,47) do (
     set newHand[%%i]=0
     set tmp[%%i]=0
@@ -123,9 +139,7 @@ exit /b
   )
 exit /b 1
 
-:updateScore
-  rem NowImplementing
-  setlocal
+:printFormation
   echo 雀頭: %head%
   for /l %%i in (1,1,%t_cnt%) do (
     echo 刻子%%i: !time[%%i]!
@@ -133,37 +147,6 @@ exit /b 1
   for /l %%i in (1,1,%o_cnt%) do (
     echo 順子%%i: !order[%%i]!
   )
-  set hand_sum=0
-
-  if %isAllNum% equ 1 (
-    call %~dp0lib/isAllSimple || set /a hand_sum^|=!errorlevel!
-    echo タンヤオ: !errorlevel!
-  )
-
-  call %~dp0lib/isSingleColor tp 13 0 || set /a hand_sum^|=!errorlevel!
-  echo 一色系: %errorlevel%
-
-  call %~dp0lib/isAllTriple %t_cnt% || set /a hand_sum^|=!errorlevel!
-  echo 対々: %errorlevel%
-
-  set /a isAllSimple=hand_sum ^& 1,isAllTriple=hand_sum ^& 2048
-  if %isAllSimple% equ 0 (
-    if %isAllTriple% gtr 0 (
-      set times=%time[1]% %time[2]% %time[3]% %time[4]%
-      call %~dp0lib/isTerminalHonor %head% "!times!" || set /a hand_sum^|=!errorlevel!
-      echo 老頭系: !errorlevel!
-    ) else (
-      call %~dp0lib/isOutSide %head% time %t_cnt% order %o_cnt% || set /a hand_sum^|=!errorlevel!
-      echo 全帯系: !errorlevel!
-    )
-  )
-
-  if %o_cnt% geq 3 (
-    set orders=%order[1]% %order[2]% %order[3]% %order[4]%
-    call %~dp0lib/isStraight "!orders!" %o_cnt% || set /a hand_sum^|=!errorlevel!
-    echo 一通: !errorlevel!
-  )
-  echo %hand_sum%
 exit /b
 
 :isAllNum::string haisi -> bool
