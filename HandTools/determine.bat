@@ -2,7 +2,8 @@
 
 :handMain
   setlocal enabledelayedexpansion
-  call Times/get begin
+  pushd %~dp0
+  call ../Times/get begin
   call :handInit
   echo 牌姿: %haisi%
   set base_hand_sum=0
@@ -10,11 +11,11 @@
   call :isAllNum "%haisi%" & set /a isAllNum=!errorlevel!
 
   if %isAllNum% equ 1 (
-    call %~dp0lib/isAllSimple || set /a base_hand_sum^|=!errorlevel!
+    call lib/isAllSimple || set /a base_hand_sum^|=!errorlevel!
     echo タンヤオ: !errorlevel!
   )
 
-  call %~dp0lib/isSingleColor tp 13 0 || set /a base_hand_sum^|=!errorlevel!
+  call lib/isSingleColor tp 13 0 || set /a base_hand_sum^|=!errorlevel!
   echo 一色系: %errorlevel%
 
   for /l %%i in (11,1,47) do (
@@ -23,13 +24,13 @@
       call :c_Time 0
       call :c_Order
       call :checkUseOut
-      rem 将来的には call :checkUseOut || call :updateScore に置き換えられる
+      rem 将来的には call :checkUseOut || call :updateHands に置き換えられる
       if errorlevel 1 (
         echo.
         echo パターン1
         echo ---------
         call :printFormation
-        call %~dp0lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
+        call lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
         echo !hand_sum!
       )
       call :handInit
@@ -37,13 +38,13 @@
       call :c_Order
       call :c_Time 0
       call :checkUseOut
-      rem 将来的には call :checkUseOut || call :updateScore に置き換えられる
+      rem 将来的には call :checkUseOut || call :updateHands に置き換えられる
       if errorlevel 1 (
         echo.
         echo パターン2
         echo ---------
         call :printFormation
-        call %~dp0lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
+        call lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
         echo !hand_sum!
         )
       call :handInit
@@ -52,20 +53,20 @@
       call :c_Order
       call :c_Time 0
       call :checkUseOut
-      rem 将来的には call :checkUseOut || call :updateScore に置き換えられる
+      rem 将来的には call :checkUseOut || call :updateHands に置き換えられる
       if errorlevel 1 (
         echo.
         echo パターン3
         echo ---------
         call :printFormation
-        call %~dp0lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
+        call lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
         echo !hand_sum!
       )
       call :handInit
     )
   )
-  call Times/get end
-  call Times/print begin end
+  call ../Times/get end
+  call ../Times/print begin end
 exit /b 0
 
 :handInit

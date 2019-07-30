@@ -25,4 +25,4 @@
     call isStraight "!orders!" %o_cnt% || set /a hand_sum_tmp^|=!errorlevel!
     echo ˆê’Ê: !errorlevel!
   )
-popd & exit /b %hand_sum_tmp%
+popd && exit /b %hand_sum_tmp%
