@@ -1,3 +1,5 @@
+pushd %~dp0../..
+
 cls
 call Utils/shipai yama 136
 
@@ -21,3 +23,4 @@ echo ŽR”v(70–‡)
 for %%i in (66 80 94 108 122) do call Utils/display yama %%i 14
 
 pause>nul
+popd

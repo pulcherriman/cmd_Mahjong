@@ -1,6 +1,8 @@
+pushd %~dp0..
+
 if "%3" == "" call Errors/occured invalid_arguments
 call :Main %1 %2 %3
-exit /b
+popd && exit /b
 
 :Main::ref arr, int left, int count
 	set /a left=%2,right=%2+%3-1

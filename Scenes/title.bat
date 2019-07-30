@@ -1,3 +1,5 @@
+rem No external file reference
+
 cls
 echo –ƒ Ver0.1
 echo.

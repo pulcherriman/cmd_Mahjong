@@ -1,3 +1,5 @@
+pushd %~dp0..
+
 set _col=0
 set _arg=%1
 
@@ -9,3 +11,5 @@ set _arg=%1
 
 :setColor_fin
 set %_arg%=%ccon_esc%%_col%m!%_arg%!%ccon_clear%
+
+popd

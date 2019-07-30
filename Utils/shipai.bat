@@ -1,3 +1,5 @@
+pushd %~dp0..
+
 if "%2" == "" call Errors/occured invalid_arguments
 set /a _n=%2-1
 
@@ -14,5 +16,5 @@ for /l %%_ in (%_n%,-1,1) do (
 	set /a %1[!_m!]=%1[%%_]
 	set /a %1[%%_]=_tmp
 )
-exit /b
+popd && exit /b
 
