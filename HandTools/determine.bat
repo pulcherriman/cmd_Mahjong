@@ -21,8 +21,8 @@
   for /l %%i in (11,1,47) do (
     if !tmp[%%i]! geq 2 (
       set /a tmp[%%i]-=2,head=%%i
-      call :c_Time 0
-      call :c_Order
+      call :c_Triple 0
+      call :c_Run
       call :checkUseOut
       rem 将来的には call :checkUseOut || call :updateHands に置き換えられる
       if errorlevel 1 (
@@ -35,8 +35,8 @@
       )
       call :handInit
       set /a tmp[%%i]-=2,head=%%i
-      call :c_Order
-      call :c_Time 0
+      call :c_Run
+      call :c_Triple 0
       call :checkUseOut
       rem 将来的には call :checkUseOut || call :updateHands に置き換えられる
       if errorlevel 1 (
@@ -49,9 +49,9 @@
         )
       call :handInit
       set /a tmp[%%i]-=2,head=%%i
-      call :c_Time 1
-      call :c_Order
-      call :c_Time 0
+      call :c_Triple 1
+      call :c_Run
+      call :c_Triple 0
       call :checkUseOut
       rem 将来的には call :checkUseOut || call :updateHands に置き換えられる
       if errorlevel 1 (
@@ -70,22 +70,22 @@
 exit /b 0
 
 :handInit
-  set /a head=0,t_cnt=0,o_cnt=0
+  set /a head=0,t_cnt=0,r_cnt=0
   set income=22
   set tp[0]=11
   set tp[1]=11
   set tp[2]=12
   set tp[3]=12
-  set tp[4]=12
-  set tp[5]=12
-  set tp[6]=13
-  set tp[7]=13
-  set tp[8]=13
-  set tp[9]=13
-  set tp[10]=14
-  set tp[11]=14
-  set tp[12]=14
-  set tp[13]=14
+  set tp[4]=13
+  set tp[5]=13
+  set tp[6]=25
+  set tp[7]=25
+  set tp[8]=25
+  set tp[9]=27
+  set tp[10]=27
+  set tp[11]=27
+  set tp[12]=44
+  set tp[13]=44
   set haisi=%tp[0]% %tp[1]% %tp[2]% %tp[3]% %tp[4]% %tp[5]% %tp[6]% %tp[7]% %tp[8]% %tp[9]% %tp[10]% %tp[11]% %tp[12]% %tp[13]%
   for /l %%i in (11,1,47) do (
     set newHand[%%i]=0
@@ -96,16 +96,16 @@ exit /b 0
     set /a tmp[%%i]+=1
   )
   for /l %%i in (1,1,4) do (
-    set  time[%%i]=
-    set order[%%i]=
+    set triple[%%i]=
+    set    run[%%i]=
   )
 exit /b 0
 
-:c_Time::int -> void
+:c_Triple::int -> void
   for /l %%i in (11,1,47) do (
     if !tmp[%%i]! geq 3 (
       set /a tmp[%%i]-=3,t_cnt+=1
-      set /a time[!t_cnt!]=%%i
+      set /a triple[!t_cnt!]=%%i
       if %1 geq 1 if !t_cnt! equ %1 (
         exit /b
       )
@@ -113,22 +113,22 @@ exit /b 0
   )
 exit /b
 
-:c_Order::void -> void
+:c_Run::void -> void
   for /l %%i in (11,1,37) do (
     set /a n=%%i%%10/8
     if !n! equ 0 (
-      call :isOrder %%i
+      call :isRun %%i
     )
   )
 exit /b
 
-:isOrder::int -> void
+:isRun::int -> void
   set /a j=%1+1,k=%1+2
-  :loop_isOrder
+  :loop_isRun
   if !tmp[%1]! geq 1 if !tmp[%j%]! geq 1 if !tmp[%k%]! geq 1 (
-    set /a tmp[%1]-=1,tmp[%j%]-=1,tmp[%k%]-=1,o_cnt+=1
-    set /a order[!o_cnt!]=%1
-    goto loop_isOrder
+    set /a tmp[%1]-=1,tmp[%j%]-=1,tmp[%k%]-=1,r_cnt+=1
+    set /a run[!r_cnt!]=%1
+    goto loop_isRun
   )
 exit /b
 
@@ -143,10 +143,10 @@ exit /b 1
 :printFormation
   echo 雀頭: %head%
   for /l %%i in (1,1,%t_cnt%) do (
-    echo 刻子%%i: !time[%%i]!
+    echo 刻子%%i: !triple[%%i]!
   )
-  for /l %%i in (1,1,%o_cnt%) do (
-    echo 順子%%i: !order[%%i]!
+  for /l %%i in (1,1,%r_cnt%) do (
+    echo 順子%%i: !run[%%i]!
   )
 exit /b
 

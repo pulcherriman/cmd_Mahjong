@@ -11,18 +11,24 @@
   set /a isAllSimple=hand_sum_tmp ^& 1,isAllTriple=hand_sum_tmp ^& 2048
   if %isAllSimple% equ 0 (
     if %isAllTriple% gtr 0 (
-      set times=%time[1]% %time[2]% %time[3]% %time[4]%
-      call isTerminalHonor %head% "!times!" || set /a hand_sum_tmp^|=!errorlevel!
+      set triples=%triple[1]% %triple[2]% %triple[3]% %triple[4]%
+      call isTerminalHonor %head% "!triples!" || set /a hand_sum_tmp^|=!errorlevel!
       echo ˜V“ªŒn: !errorlevel!
     ) else (
-      call isOutSide %head% time %t_cnt% order %o_cnt% || set /a hand_sum_tmp^|=!errorlevel!
+      call isOutSide %head% triple %t_cnt% run %r_cnt% || set /a hand_sum_tmp^|=!errorlevel!
       echo ‘S‘ÑŒn: !errorlevel!
     )
   )
 
-  if %o_cnt% geq 3 (
-    set orders=%order[1]% %order[2]% %order[3]% %order[4]%
-    call isStraight "!orders!" %o_cnt% || set /a hand_sum_tmp^|=!errorlevel!
-    echo ˆê’Ê: !errorlevel!
+  if %r_cnt% geq 3 (
+    set runs=%run[1]% %run[2]% %run[3]% %run[4]%
+    call isStraightOrThreeColorRuns "!runs!" %r_cnt% || set /a hand_sum_tmp^|=!errorlevel!
+    echo OF“¯‡^(128^) or ˆê’Ê^(256^): !errorlevel!
+  )
+
+  if %r_cnt% geq 2 (
+    set runs=%run[1]% %run[2]% %run[3]% %run[4]%
+    call isDoubleRun "!runs!" %r_cnt% || set /a hand_sum_tmp^|=!errorlevel!
+    echo ˆê”uŒû^(512^) or “ñ”uŒû^(32768^): !errorlevel!
   )
 popd && exit /b %hand_sum_tmp%

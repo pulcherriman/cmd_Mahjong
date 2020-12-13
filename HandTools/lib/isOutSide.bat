@@ -1,4 +1,4 @@
-:isOutSide::int head, ref int[] time, int endIdxTime, ref int[] order, int endIdxOrder -> int
+:isOutSide::int head, ref int[] triple, int endIdxTime, ref int[] order, int endIdxOrder -> int
   setlocal
   rem 雀頭チェック
   set /a tmp="(1-%1%%10)*(%1%%10%%9)*(%1/10%%10%%4)"
