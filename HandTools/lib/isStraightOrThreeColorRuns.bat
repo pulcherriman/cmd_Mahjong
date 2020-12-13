@@ -6,9 +6,9 @@
       set _tmp=!_tmp!%%o
     )
     set /a _result="_tmp%%101010%%10101"
-    if !_result! equ 306 exit /b 256 ::ï¿½ï¿½Cï¿½ÊŠï¿½
+    if !_result! equ 306 exit /b 262144 ::ˆê‹C’ÊŠÑ
     set /a _result="_tmp%%102030%%10101"
-    if !_result! equ 0 exit /b 128 ::ï¿½Oï¿½Fï¿½ï¿½ï¿½ï¿½
+    if !_result! equ 0 exit /b 131072 ::OF“¯‡
   ) else if %2 equ 4 (
     for /l %%i in (0,3,9) do (
       set _tmp=
@@ -16,9 +16,9 @@
         if %%i neq %%j set _tmp=!_tmp!!runs:~%%j,2!
       )
       set /a _result="_tmp%%101010%%10101"
-      if !_result! equ 306 exit /b 256 ::ï¿½ï¿½Cï¿½ÊŠï¿½
+      if !_result! equ 306 exit /b 262144 ::ˆê‹C’ÊŠÑ
       set /a _result="_tmp%%102030%%10101"
-      if !_result! equ 0 exit /b 128 ::ï¿½Oï¿½Fï¿½ï¿½ï¿½ï¿½
+      if !_result! equ 0 exit /b 131072 ::OF“¯‡
     )
   )
 exit /b 0

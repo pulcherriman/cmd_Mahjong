@@ -11,7 +11,7 @@
   for /l %%n in (1,1,%3) do (
     set /a tailnum="%2[%%n]%%10"
     if !tailnum! neq 1 if !tailnum! neq 9 if !%2[%%n]! lss 40 ( exit /b 0 )
-    if !%2[%%n]! geq 40 ( exit /b 32 ::混全帯幺九)
+    if !%2[%%n]! geq 40 ( exit /b 1024 ::混全帯幺九)
   )
-  if %1 geq 40 ( exit /b 32 ::混全帯幺九)
-exit /b 64 ::純全帯幺九
+  if %1 geq 40 ( exit /b 1024 ::混全帯幺九)
+exit /b 512 ::純全帯幺九

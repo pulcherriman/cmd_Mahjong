@@ -7,5 +7,5 @@
     set /a tmp="(1-%%t%%10)*(%%t%%10%%9)*(%%t/10%%10%%4)"
     if !tmp! neq 0 ( exit /b 0 )
   )
-  if %1 geq 40 ( exit /b 1024 ::¬˜V“ª)
-exit /b 67108864 ::´˜V“ª
+  if %1 geq 40 ( exit /b 2048 ::¬˜V“ª)
+exit /b 134217728 ::´˜V“ª

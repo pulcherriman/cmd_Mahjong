@@ -17,6 +17,7 @@
 
   call lib/isSingleColor tp 13 0 || set /a base_hand_sum^|=!errorlevel!
   echo 一色系: %errorlevel%
+  echo ^(混: 256, 清: 128, 字: 33554432, 緑: 67108864^)
 
   for /l %%i in (11,1,47) do (
     if !tmp[%%i]! geq 2 (
@@ -31,7 +32,7 @@
         echo ---------
         call :printFormation
         call lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
-        echo !hand_sum!
+        echo 役合計値: !hand_sum!
       )
       call :handInit
       set /a tmp[%%i]-=2,head=%%i
@@ -45,7 +46,7 @@
         echo ---------
         call :printFormation
         call lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
-        echo !hand_sum!
+        echo 役合計値: !hand_sum!
         )
       call :handInit
       set /a tmp[%%i]-=2,head=%%i
@@ -60,7 +61,7 @@
         echo ---------
         call :printFormation
         call lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
-        echo !hand_sum!
+        echo 役合計値: !hand_sum!
       )
       call :handInit
     )
@@ -70,20 +71,20 @@
 exit /b 0
 
 :handInit
-  set /a head=0,t_cnt=0,r_cnt=0
+  set /a head=0,t_cnt=0,r_cnt=0,pon_cnt=2,chi_cnt=0,close_kan_cnt=1,open_kan_cnt=1
   set income=22
   set tp[0]=11
   set tp[1]=11
-  set tp[2]=12
-  set tp[3]=12
-  set tp[4]=13
-  set tp[5]=13
-  set tp[6]=25
-  set tp[7]=25
-  set tp[8]=25
-  set tp[9]=27
-  set tp[10]=27
-  set tp[11]=27
+  set tp[2]=11
+  set tp[3]=21
+  set tp[4]=21
+  set tp[5]=21
+  set tp[6]=29
+  set tp[7]=29
+  set tp[8]=29
+  set tp[9]=31
+  set tp[10]=31
+  set tp[11]=31
   set tp[12]=44
   set tp[13]=44
   set haisi=%tp[0]% %tp[1]% %tp[2]% %tp[3]% %tp[4]% %tp[5]% %tp[6]% %tp[7]% %tp[8]% %tp[9]% %tp[10]% %tp[11]% %tp[12]% %tp[13]%
