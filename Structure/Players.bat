@@ -11,7 +11,7 @@
 		exit /b
 	)
 	set players[%1]=0
-	call Structure/Player ctor %1
+	call Structure/Player ctor %*
 	exit /b
 
 :act :: method id values...

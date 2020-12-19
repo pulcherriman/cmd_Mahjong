@@ -1,40 +1,24 @@
 :: 対局を開始
-pushd %~dp0../..
+call Structure/Table ctor
+call Structure/Players create 1 山田
+call Structure/Players create 2 田中
+call Structure/Players create 3 佐藤
+call Structure/Players create 4 木村
 
+
+:: 局ごとの処理
+call Structure/Table shipai
+:: TODO:ワンパイ
+call Structure/Players act haipai 1 14
+call Structure/Players act haipai 2 27
+call Structure/Players act haipai 3 40
+call Structure/Players act haipai 4 53
+
+:: 描画
 cls
-call Utils/shipai yama 136
-
-call Times/get begin
-
-for %%i in (14 27 40 53) do call Utils/sort yama %%i 13
-
-call Times/get end
-cls
-call Times/print begin end
-
-echo 王牌(14枚)
-call Utils/display yama 0 14
-echo.
-
-echo 配牌(13枚*4)
-for %%i in (14 27 40 53) do call Utils/display yama %%i 13
-
-echo.
-echo 山牌(70枚)
-for %%i in (66 80 94 108 122) do call Utils/display yama %%i 14
-
+call Structure/Table display_Info
+call Structure/Players act display 1 1
+call Structure/Players act display 2 2
+call Structure/Players act display 3 3
+call Structure/Players act display 4 4
 pause>nul
-call Structure/Players create p1
-call Structure/Players create p2
-call Structure/Players create p3
-call Structure/Players create p4
-call Structure/Players act haipai p1 14
-call Structure/Players act haipai p2 27
-call Structure/Players act haipai p3 40
-call Structure/Players act haipai p4 53
-call Structure/Players act display p1 1
-call Structure/Players act display p2 2
-call Structure/Players act display p3 3
-call Structure/Players act display p4 4
-pause>nul
-popd
