@@ -1,7 +1,5 @@
 pushd %~dp0..
 
-echo %cd%
-pause
 start ExternalTools/ansicon -i
 set ccon_esc=[
 set ccon_clear=[0m
