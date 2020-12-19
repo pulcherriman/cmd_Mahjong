@@ -25,10 +25,13 @@
 	set _disp=–³–³–³–³–³–³–³–³–³–³ŒÜˆê“ñOlŒÜ˜Zµ”ª‹ã‡D‡@‡A‡B‡C‡D‡E‡F‡G‡H‚T‚P‚Q‚R‚S‚T‚U‚V‚W‚X–³“Œ“ì¼–k”’á¢’†–³–³–³@
 	set _char=!_disp:~%1,1!
 	set /a _isR=%1%%10
-	if %_isR% equ 0 call ExternalTools/setColor _char fore red bright
+	if %_isR% equ 0 (
+		call ExternalTools/Color _char fore red bright
+	) else (
+		call ExternalTools/Color _char fore black
+	)
 	exit /b
-
-
+	
 :putKanjiNumber :: number
 	set /a _num=%1
 	if %_num% gtr 10 (

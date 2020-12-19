@@ -12,7 +12,6 @@
 
 :dtor :: id
 	if "%1" == "" call Errors/occured Error invalid_arguments
-    call ExternalTools/setPosition 25 1
     for /f "delims==" %%i in ('set $p%1') do (
         set %%i=
     )

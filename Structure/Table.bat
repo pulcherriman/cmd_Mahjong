@@ -9,10 +9,11 @@
     set $Table.Kyoku=1
     set $Table.Tsumibou=0
     set $Table.Kyoutaku=0
+
+    set /a $Table.Nokori=136-14-13*4
     exit /b
 
 :dtor
-    call ExternalTools/setPosition 25 1
     for /f "delims==" %%i in ('set $Table') do (
         set %%i=
     )    
@@ -24,7 +25,8 @@
 
 :display_Info
     call ExternalTools/setPosition 11 35
-    call Utils/display PutPai 40+$Table.Ba
+    set _disp="ìåìÏêºñk"
+    echo.|set /p _=!_disp:~%$Table.Ba%,1!
     call Utils/display PutKanjiNumber $Table.Kyoku
     echo ã«
 
@@ -36,5 +38,10 @@
     echo ãüëı
     call ExternalTools/setPosition 14 39
     call Utils/display PutArabicNumber $Table.Kyoutaku
+
+    call ExternalTools/setPosition 15 35
+    echo éc:
+    call ExternalTools/setPosition 15 39
+    call Utils/display PutArabicNumber $Table.Nokori
 
     exit /b
