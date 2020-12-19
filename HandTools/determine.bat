@@ -15,7 +15,7 @@
     echo タンヤオ: !errorlevel!
   )
 
-  call lib/isSingleColor tp 13 0 || set /a base_hand_sum^|=!errorlevel!
+  call lib/isFlush tp 13 0 || set /a base_hand_sum^|=!errorlevel!
   echo 一色系: %errorlevel%
   echo ^(混: 256, 清: 128, 字: 33554432, 緑: 67108864^)
 
@@ -33,6 +33,9 @@
         call :printFormation
         call lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
         echo 役合計値: !hand_sum!
+        echo.
+        call lib/printHandList !hand_sum! & set han_value=!errorlevel!
+        echo !han_value! 翻
       )
       call :handInit
       set /a tmp[%%i]-=2,head=%%i
@@ -47,6 +50,9 @@
         call :printFormation
         call lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
         echo 役合計値: !hand_sum!
+        echo.
+        call lib/printHandList !hand_sum! & set han_value=!errorlevel!
+        echo !han_value! 翻
         )
       call :handInit
       set /a tmp[%%i]-=2,head=%%i
@@ -62,31 +68,38 @@
         call :printFormation
         call lib/updateHands & set /a hand_sum="base_hand_sum|!errorlevel!"
         echo 役合計値: !hand_sum!
+        echo.
+        call lib/printHandList !hand_sum! & set han_value=!errorlevel!
+        echo !han_value! 翻
       )
       call :handInit
     )
   )
+  echo.
   call ../Times/get end
   call ../Times/print begin end
 exit /b 0
 
 :handInit
-  set /a head=0,t_cnt=0,r_cnt=0,pon_cnt=2,chi_cnt=0,close_kan_cnt=1,open_kan_cnt=1
-  set income=22
+  set /a head=0,t_cnt=0,r_cnt=0
+  set /a pon_cnt=2,chi_cnt=0,close_kan_cnt=1,open_kan_cnt=0
+  set /a table_wind=41,seat_wind=42
+  rem 東場南家想定↑
+  set income=45
   set tp[0]=11
-  set tp[1]=11
-  set tp[2]=11
-  set tp[3]=21
-  set tp[4]=21
-  set tp[5]=21
-  set tp[6]=29
-  set tp[7]=29
-  set tp[8]=29
-  set tp[9]=31
-  set tp[10]=31
-  set tp[11]=31
-  set tp[12]=44
-  set tp[13]=44
+  set tp[1]=12
+  set tp[2]=13
+  set tp[3]=41
+  set tp[4]=41
+  set tp[5]=41
+  set tp[6]=45
+  set tp[7]=45
+  set tp[8]=46
+  set tp[9]=46
+  set tp[10]=46
+  set tp[11]=47
+  set tp[12]=47
+  set tp[13]=47
   set haisi=%tp[0]% %tp[1]% %tp[2]% %tp[3]% %tp[4]% %tp[5]% %tp[6]% %tp[7]% %tp[8]% %tp[9]% %tp[10]% %tp[11]% %tp[12]% %tp[13]%
   for /l %%i in (11,1,47) do (
     set newHand[%%i]=0

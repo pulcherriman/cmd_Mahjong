@@ -1,4 +1,4 @@
-:isSingleColor::ref int[] tp, int endIdx, bool is7Pairs -> int
+:isFlush::ref int[] tp, int endIdx, bool is7Pairs -> int
   setlocal
   set /a is7Pairs=%3,fst_tp=%1[0],fst_color="fst_tp/10%%10"
   if %fst_tp% geq 40 exit /b 33554432 ::šˆêF
