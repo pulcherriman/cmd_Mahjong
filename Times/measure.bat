@@ -1,6 +1,6 @@
 pushd %~dp0..
 
-if "%1" == "" call Errors/occured invalid_arguments
+if "%1" == "" call Errors/occured Error invalid_arguments
 call Times/get begin
 call %*
 call Times/get end

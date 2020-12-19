@@ -1,6 +1,6 @@
 pushd %~dp0..
 
-if "%3" == "" call Errors/occured invalid_arguments
+if "%3" == "" call Errors/occured Error invalid_arguments
 
 setlocal
 set _disp=–³–³–³–³–³–³–³–³–³–³ŒÜˆê“ñOlŒÜ˜Zµ”ª‹ã‡D‡@‡A‡B‡C‡D‡E‡F‡G‡H‚T‚P‚Q‚R‚S‚T‚U‚V‚W‚X–³“Œ“ì¼–k”’á¢’†–³–³–³@

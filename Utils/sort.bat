@@ -1,6 +1,6 @@
 pushd %~dp0..
 
-if "%3" == "" call Errors/occured invalid_arguments
+if "%3" == "" call Errors/occured Error invalid_arguments
 call :Main %1 %2 %3
 popd && exit /b
 
@@ -10,7 +10,7 @@ popd && exit /b
 exit /b
 
 :Sort
-rem ‘}“üƒ\[ƒg
+rem æŒ¿å…¥ã‚½ãƒ¼ãƒ?
 set /a st=%2+1
 for /l %%i in (%st%,1,%3) do (
     set /a k=%%i-1

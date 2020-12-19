@@ -1,6 +1,6 @@
 pushd %~dp0..
 
-if "%1" == "" call Errors/occured invalid_arguments
+if "%1" == "" call Errors/occured Error invalid_arguments
 if "%2" == "" (
 	set /a _hour=%1
 	set /a _ms=_hour%%100+100,_hour/=100

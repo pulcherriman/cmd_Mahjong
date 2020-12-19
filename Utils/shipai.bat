@@ -1,6 +1,6 @@
 pushd %~dp0..
 
-if "%2" == "" call Errors/occured invalid_arguments
+if "%2" == "" call Errors/occured Error invalid_arguments
 set /a _n=%2-1
 
 for /l %%_ in (0,1,%_n%) do (

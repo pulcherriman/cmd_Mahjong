@@ -6,8 +6,9 @@ setlocal EnableDelayedExpansion
 call Utils/envInit
 
 :Routine_main
-call Scenes/title
+call Scenes/titleMenu
 call Scenes/games/init
+call Scenes/games/finish
 
 :Routine_fin
 goto Routine_init
