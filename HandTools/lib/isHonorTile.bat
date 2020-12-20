@@ -1,7 +1,7 @@
-:isHonorTile::string triples, int head, int seat_wind, int table_wind  -> int
+:isHonorTile::string triplets, int head, int seat_wind, int table_wind  -> int
   setlocal
-  set triples=%~1
-  set triplesbit=0,headbit=0,s_windbit=0,t_windbit=0
+  set triplets=%~1
+  set tripletsbit=0,headbit=0,s_windbit=0,t_windbit=0
   rem 1  東
   rem 2  南
   rem 4  西
@@ -23,56 +23,56 @@
     )
   )
 
-  for %%t in (%triples%) do (
+  for %%t in (%triplets%) do (
     for /l %%i in (0,1,6) do (
       set /a _n="41+%%i"
       if %%t equ !_n! (
-        set /a triplesbit+="1<<%%i"
+        set /a tripletsbit+="1<<%%i"
       )
     )
   )
 
-  set /a bitmasked=triplesbit ^& 112
+  set /a bitmasked=tripletsbit ^& 112
   if %bitmasked% equ 112 (
-    exit /b 4194304 ::大三元
+    exit /b 2097152 ::大三元
   )
 
-  set /a bitmasked=triplesbit ^& 15
+  set /a bitmasked=tripletsbit ^& 15
   if %bitmasked% equ 15 (
-    exit /b 16777216 ::大四喜
+    exit /b 8388608 ::大四喜
   )
 
-  set /a bitmasked=(triplesbit + headbit) ^& 15
+  set /a bitmasked=(tripletsbit + headbit) ^& 15
   if %bitmasked% equ 15 (
-    exit /b 8388608 ::小四喜
+    exit /b 4194304 ::小四喜
   )
 
-  set /a honorsbit=0,bitmasked=(triplesbit + headbit) ^& 112
+  set /a honorsbit=0,bitmasked=(tripletsbit + headbit) ^& 112
   if %bitmasked% equ 112 ( ::小三元
     set /a honorsbit+=32768
   )
 
-  set /a bitmasked=triplesbit ^& s_windbit
+  set /a bitmasked=tripletsbit ^& s_windbit
   if %bitmasked% equ %s_windbit% ( ::自風牌
     set /a honorsbit+=4
   )
 
-  set /a bitmasked=triplesbit ^& t_windbit
+  set /a bitmasked=tripletsbit ^& t_windbit
   if %bitmasked% equ %t_windbit% ( ::場風牌
     set /a honorsbit+=8
   )
 
-  set /a bitmasked=triplesbit ^& 16
+  set /a bitmasked=tripletsbit ^& 16
   if %bitmasked% equ 16 ( ::白
     set /a honorsbit+=16
   )
 
-  set /a bitmasked=triplesbit ^& 32
+  set /a bitmasked=tripletsbit ^& 32
   if %bitmasked% equ 32 ( ::發
     set /a honorsbit+=32
   )
 
-  set /a bitmasked=triplesbit ^& 64
+  set /a bitmasked=tripletsbit ^& 64
   if %bitmasked% equ 64 ( ::中
     set /a honorsbit+=64
   )

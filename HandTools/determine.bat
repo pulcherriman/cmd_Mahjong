@@ -5,7 +5,8 @@
   pushd %~dp0
   call ../Times/get begin
   call :handInit
-  echo 牌姿: %haisi%
+  call :printCondition
+
   set base_hand_sum=0
 
   call :isAllNum "%haisi%" & set /a isAllNum=!errorlevel!
@@ -15,7 +16,7 @@
     echo タンヤオ: !errorlevel!
   )
 
-  call lib/isFlush tp 13 0 || set /a base_hand_sum^|=!errorlevel!
+  call lib/isFlush tp 13 0 %winning_tile% %open_group_cnt% %close_kan_cnt% || set /a base_hand_sum^|=!errorlevel!
   echo 一色系: %errorlevel%
   echo ^(混: 256, 清: 128, 字: 33554432, 緑: 67108864^)
 
@@ -81,25 +82,25 @@
 exit /b 0
 
 :handInit
-  set /a head=0,t_cnt=0,r_cnt=0
-  set /a pon_cnt=2,chi_cnt=0,close_kan_cnt=1,open_kan_cnt=0
-  set /a table_wind=41,seat_wind=42
-  rem 東場南家想定↑
-  set income=45
+  set /a pon_cnt=1,chi_cnt=0,close_kan_cnt=0,open_kan_cnt=0
+  set /a table_wind=41,seat_wind=41,riichi=0,oneshot=0,self_pick=0,haitei=0,rinshan=0,chankan=0
+  rem フラグ変数: 場家リーチ一発ツモ海底嶺上槍槓の順↑
+  set winning_tile=11
   set tp[0]=11
-  set tp[1]=12
-  set tp[2]=13
-  set tp[3]=41
-  set tp[4]=41
-  set tp[5]=41
-  set tp[6]=45
-  set tp[7]=45
-  set tp[8]=46
-  set tp[9]=46
-  set tp[10]=46
-  set tp[11]=47
-  set tp[12]=47
-  set tp[13]=47
+  set tp[1]=11
+  set tp[2]=11
+  set tp[3]=12
+  set tp[4]=12
+  set tp[5]=13
+  set tp[6]=14
+  set tp[7]=15
+  set tp[8]=16
+  set tp[9]=17
+  set tp[10]=18
+  set tp[11]=19
+  set tp[12]=19
+  set tp[13]=19
+  set /a head=0,t_cnt=0,r_cnt=0,open_group_cnt=pon_cnt+chi_cnt+open_kan_cnt
   set haisi=%tp[0]% %tp[1]% %tp[2]% %tp[3]% %tp[4]% %tp[5]% %tp[6]% %tp[7]% %tp[8]% %tp[9]% %tp[10]% %tp[11]% %tp[12]% %tp[13]%
   for /l %%i in (11,1,47) do (
     set newHand[%%i]=0
@@ -110,8 +111,8 @@ exit /b 0
     set /a tmp[%%i]+=1
   )
   for /l %%i in (1,1,4) do (
-    set triple[%%i]=
-    set    run[%%i]=
+    set triplet[%%i]=
+    set     run[%%i]=
   )
 exit /b 0
 
@@ -119,7 +120,7 @@ exit /b 0
   for /l %%i in (11,1,47) do (
     if !tmp[%%i]! geq 3 (
       set /a tmp[%%i]-=3,t_cnt+=1
-      set /a triple[!t_cnt!]=%%i
+      set /a triplet[!t_cnt!]=%%i
       if %1 geq 1 if !t_cnt! equ %1 (
         exit /b
       )
@@ -154,14 +155,48 @@ exit /b
   )
 exit /b 1
 
-:printFormation
+:printFormation::void -> void
   echo 雀頭: %head%
   for /l %%i in (1,1,%t_cnt%) do (
-    echo 刻子%%i: !triple[%%i]!
+    echo 刻子%%i: !triplet[%%i]!
   )
   for /l %%i in (1,1,%r_cnt%) do (
     echo 順子%%i: !run[%%i]!
   )
+exit /b
+
+:printCondition::void -> void
+  setlocal
+  echo 牌姿: %haisi%
+
+  if %self_pick% equ 0 (
+    set win_type=ロン
+  ) else (
+    set win_type=ツモ
+  )
+  echo %win_type%: %winning_tile%
+  echo 鳴き回数: ポン %pon_cnt% 回, チー %chi_cnt% 回, 暗槓 %close_kan_cnt% 回, 明槓 %open_kan_cnt% 回
+
+  if %riichi% equ 1 (
+    set disp_riichi=リーチ
+  ) else if %riichi% equ 2 (
+    set disp_riichi=ダブリー
+  )
+  if %oneshot% neq 0 (
+    set disp_oneshot=一発
+  )
+  if %haitei% neq 0 (
+    set disp_haitei=海底or河底
+  )
+  if %rinshan% neq 0 (
+    set disp_rinshan=嶺上開花
+  )
+  if %chankan% neq 0 (
+    set disp_chankan=槍槓
+  )
+  echo 状況: %disp_riichi% %disp_oneshot% %disp_haitei% %disp_rinshan% %disp_chankan%
+  echo -------------------
+  echo.
 exit /b
 
 :isAllNum::string haisi -> bool
