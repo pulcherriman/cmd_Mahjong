@@ -1,5 +1,11 @@
 :__method
 	if "%1" == "" call Errors/occured Error invalid_arguments
+    if not defined $Utils.SPACE (
+        set $Utils.SPACE= Message:
+        for /l %%i in (1,1,63) do set $Utils.SPACE=!$Utils.SPACE! 
+		call ExternalTools/Color Description $Utils.SPACE
+    )
+
 	call :%*
 	exit /b
 
@@ -26,9 +32,9 @@
 	set _char=!_disp:~%1,1!
 	set /a _isR=%1%%10
 	if %_isR% equ 0 (
-		call ExternalTools/Color _char fore red bright
+		call ExternalTools/Color Pai_Aka _char
 	) else (
-		call ExternalTools/Color _char fore black
+		call ExternalTools/Color Pai_Normal _char
 	)
 	exit /b
 	
@@ -51,3 +57,23 @@
 	set _disp=‚O‚P‚Q‚R‚S‚T‚U‚V‚W‚X
 	echo.| set /p _=!_disp:~%_num%,1!
 	exit /b
+
+:Cls
+	cls
+	call Utils/Display Message
+	exit /b
+
+:Message :: message|null
+	if "%1" == "" (
+		call ExternalTools/setPosition 28 2
+    	set /p _=%$Utils.SPACE%<nul
+	) else (
+		call ExternalTools/setPosition 28 3
+		call ExternalTools/Color Description Message:%1
+	)
+    exit /b
+
+:Pause :: message|null
+	call :Message %1
+	if "%1" == "" call ExternalTools/setPosition 28 11
+	pause>nul

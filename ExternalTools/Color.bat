@@ -1,13 +1,22 @@
-set _col=0
-set _arg=%1
+:__method
+	if "%2" == "" call Errors/occured Error invalid_arguments
+	if defined %2 (
+		call :%*
+	) else (
+		set _str=%2
+		call :__method %1 _str
+		echo.|set /p _=!_str!
+	)
+	exit /b
 
-:setColor_loop
-	shift
-	if "%1" == "" goto setColor_fin
-	set /a _col+=ccon_%1
-	goto setColor_loop
+:Pai_Normal
+	set %1=%ccon_esc%30m%ccon_esc%107m!%1!%ccon_default%
+	exit /b
 
-:setColor_fin
-set %_arg%=%ccon_esc%%_col%m%ccon_esc%107m!%_arg%!%ccon_esc%97m%ccon_esc%42m
-exit /b
+:Pai_Aka
+	set %1=%ccon_esc%91m%ccon_esc%107m!%1!%ccon_default%
+	exit /b
 
+:Description
+	set %1=%ccon_esc%97m%ccon_esc%40m!%1!%ccon_default%
+	exit /b

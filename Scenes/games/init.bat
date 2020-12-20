@@ -1,24 +1,25 @@
-:: 対局を開始
-call Structure/Table ctor
-call Structure/Players create 1 山田
-call Structure/Players create 2 田中
-call Structure/Players create 3 佐藤
-call Structure/Players create 4 木村
 
+:: 対局を開始
+call Structure/Players ctor
+
+:: TODO: そのうち定数ではなくしたい
+call Structure/Players create 10001 CPU1
+call Structure/Players create 10002 CPU2
+call Structure/Players create 10003 CPU3
+call Structure/Players create 1 Player
+call Structure/Table ctor $Players.Id
+call Structure/Table set_player 1
+
+:: 親決め
+call Utils/Display Cls
+call Structure/Table display_Players
+call Structure/Table decide_Chicha
 
 :: 局ごとの処理
-call Structure/Table shipai
-:: TODO:ワンパイ
-call Structure/Players act haipai 1 14
-call Structure/Players act haipai 2 27
-call Structure/Players act haipai 3 40
-call Structure/Players act haipai 4 53
+call Structure/Table start_section
 
 :: 描画
-cls
 call Structure/Table display_Info
-call Structure/Players act display 1 1
-call Structure/Players act display 2 2
-call Structure/Players act display 3 3
-call Structure/Players act display 4 4
-pause>nul
+
+call Utils/Display pause ここから先は開発中です。何かキーを押すとトップに戻ります。
+
